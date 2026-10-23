@@ -20,12 +20,11 @@ than the audited original SHA-256:
 ## Reproduce
 
 Requirements: Python 3 and JDK 9 or newer (the helper is compiled with `--release 8`).
-Run from the repository root:
+Run from the `Emu_1` directory. The default input is the original Manager JAR
+in the repository root; the output is always confined to `Emu_1`:
 
 ```sh
-mkdir -p build
-git show '76f73e6aecac99c4ef574553ddb8f34fab798204:MicroEmulator Manager.jar' > build/original-manager.jar
-python3 tools/patch_proxy_loopback.py --input build/original-manager.jar
+python3 tools/patch_proxy_loopback.py
 ```
 
 ## Regression test

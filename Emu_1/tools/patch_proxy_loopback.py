@@ -66,11 +66,16 @@ def patch_bridge(data):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--input', type=pathlib.Path, required=True,
-                        help='Unmodified Manager JAR from commit 76f73e6')
+    parser.add_argument('--input', type=pathlib.Path,
+                        default=ROOT.parent / 'MicroEmulator Manager.jar',
+                        help='Unmodified Manager JAR (defaults to the original outside Emu_1)')
     parser.add_argument('--output', type=pathlib.Path,
                         default=ROOT / 'MicroEmulator Manager.jar')
     args = parser.parse_args()
+    try:
+        args.output.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        raise SystemExit('Refusing to write outside Emu_1; original files must remain unchanged')
     original = args.input.read_bytes()
     if hashlib.sha256(original).hexdigest() != BASE_SHA256:
         raise SystemExit('Refusing to patch: input SHA-256 does not match the audited original')
